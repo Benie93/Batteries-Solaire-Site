@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Batteries Solaires : Énergie Autonome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Police de caractères Inter (Google Fonts) - Optionnel, mais rend le texte plus agréable */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Assurez-vous que les images s'adaptent à leur conteneur et sont responsives */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block; /* Supprime l'espace sous l'image dû aux propriétés inline */
+        }
+        /* Style pour le message d'erreur/information de l'API Gemini */
+        .message-box {
+            background-color: #fff3e0; /* Très léger orange */
+            color: #e65100; /* Texte orange */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            border: 1px solid #ffb74d; /* Bordure orange */
+            display: none; /* Caché par défaut */
+        }
+        .message-box.show {
+            display: block;
+        }
+        .message-box.error {
+            background-color: #ffebee; /* Rouge très clair */
+            color: #d32f2f; /* Texte rouge */
+            border-color: #ef9a9a; /* Bordure rouge */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800 antialiased">
+    <header class="bg-gradient-to-r from-green-600 to-green-800 text-white p-6 shadow-xl rounded-b-xl">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-4xl font-extrabold mb-4 md:mb-0 drop-shadow-lg">🌞 Solutions Batteries Solaires</h1>
+            <nav>
+                <ul class="flex flex-wrap justify-center md:space-x-8 space-x-4 text-lg">
+                    <li><a href="#accueil" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Accueil</a></li>
+                    <li><a href="#avantages" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Avantages</a></li>
+                    <li><a href="#technologies" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Technologies</a></li>
+                    <li><a href="#comparateur-ia" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Comparateur IA</a></li>
+                    <li><a href="#q-a-gemini" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Q&A Gemini</a></li>
+                    <li><a href="#contact" class="hover:text-green-200 transition-colors duration-300 transform hover:scale-105 inline-block">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-8 p-4 md:p-8">
+
+        <section id="accueil" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12 transform hover:scale-[1.01] transition-transform duration-300 ease-in-out">
+            <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">L'Autonomie Énergétique à Votre Portée !</h2>
+            <p class="text-xl leading-relaxed mb-6 text-center">
+                Les batteries solaires sont la clé pour **maximiser l'efficacité de votre installation photovoltaïque**.
+                Elles stockent l'énergie excédentaire produite durant la journée pour la libérer quand vous en avez besoin,
+                même la nuit ou par temps couvert. Dites adieu aux coupures de courant et réduisez drastiquement votre facture d'électricité !
+            </p>
+            <div class="mt-8 text-center">
+                <img src="https://placehold.co/800x450/B2DFDB/000000?text=Maison+Solaire+avec+Batterie" alt="Maison moderne avec panneaux solaires et un système de stockage d'énergie" class="rounded-xl shadow-lg mx-auto border-4 border-green-200">
+                <p class="text-sm text-gray-500 mt-4">Votre maison, alimentée en continu par l'énergie du soleil.</p>
+            </div>
+        </section>
+
+        <section id="avantages" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12 transform hover:scale-[1.01] transition-transform duration-300 ease-in-out">
+            <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">Pourquoi Choisir le Stockage Solaire ?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="text-lg leading-relaxed">
+                    <p class="mb-4">
+                        L'énergie solaire est intermittente : elle est abondante le jour, mais absente la nuit.
+                        Les batteries solaires transforment cette intermittence en **stabilité**.
+                        Elles capturent l'énergie excédentaire que vos panneaux produisent et la gardent précieusement
+                        pour les moments où le soleil ne brille pas, ou lorsque votre consommation est la plus élevée.
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 font-semibold text-gray-700">
+                        <li>**Indépendance Énergétique :** Moins de dépendance au réseau public.</li>
+                        <li>**Économies Significatives :** Réduisez vos factures d'électricité en consommant votre propre énergie.</li>
+                        <li>**Sécurité en Cas de Panne :** Alimentation de secours automatique.</li>
+                        <li>**Optimisation de l'Autoconsommation :** Utilisez 100% de votre production solaire.</li>
+                        <li>**Impact Écologique Réduit :** Contribuez à un avenir plus vert.</li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <img src="https://placehold.co/800x450/DCEDC8/000000?text=Flux+d%27%C3%A9nergie+optimis%C3%A9" alt="Diagramme du flux d'énergie solaire avec stockage" class="rounded-xl shadow-lg mx-auto border-4 border-green-200">
+                    <p class="text-sm text-gray-500 mt-4">Un système intelligent pour une énergie toujours disponible.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="technologies" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12">
+            <h2 class="text-4xl font-bold text-green-700 mb-8 text-center">Nos Technologies de Batteries Solaires</h2>
+            <p class="text-xl leading-relaxed mb-10 text-center">
+                Choisissez la technologie qui correspond le mieux à vos besoins et à votre budget.
+                Nous vous présentons les options les plus fiables et performantes du marché.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-green-50 p-6 rounded-xl shadow-md border border-green-200 flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                    <img src="https://placehold.co/250x180/A5D6A7/000000?text=Batterie+LiFePO4" alt="Image d'une batterie Lithium-ion LiFePO4" class="rounded-lg mb-4 border border-green-300">
+                    <h3 class="text-2xl font-semibold mb-2 text-green-800">Lithium-ion (LiFePO4)</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Le haut de gamme : **durée de vie exceptionnelle**, grande profondeur de décharge (DoD > 90%),
+                        rendement élevé et absence totale d'entretien. Idéales pour l'autoconsommation maximale.
+                    </p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl shadow-md border border-green-200 flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                    <img src="https://placehold.co/250x180/81C784/000000?text=Batterie+GEL" alt="Image d'une batterie GEL" class="rounded-lg mb-4 border border-green-300">
+                    <h3 class="text-2xl font-semibold mb-2 text-green-800">GEL</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Robustes et fiables : électrolyte sous forme de gel, sans entretien,
+                        et excellentes pour les applications nécessitant des décharges profondes régulières.
+                    </p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl shadow-md border border-green-200 flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                    <img src="https://placehold.co/250x180/66BB6A/000000?text=Batterie+AGM" alt="Image d'une batterie AGM" class="rounded-lg mb-4 border border-green-300">
+                    <h3 class="text-2xl font-semibold mb-2 text-green-800">AGM (Absorbent Glass Mat)</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Polyvalentes et efficaces : scellées, sans entretien, résistantes aux vibrations et
+                        offrant de bonnes performances dans une large gamme de températures.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparateur-ia" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12">
+            <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">✨ Comparez les Batteries avec Notre IA ✨</h2>
+            <p class="text-xl leading-relaxed mb-6 text-center">
+                Sélectionnez deux types de batteries ci-dessous et laissez notre intelligence artificielle vous fournir une comparaison détaillée de leurs avantages et inconvénients.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
+                <div class="w-full md:w-1/3">
+                    <label for="battery1-select" class="block text-lg font-medium text-gray-700 mb-2">Batterie 1 :</label>
+                    <select id="battery1-select" class="block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-lg">
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="Lithium-ion (LiFePO4)">Lithium-ion (LiFePO4)</option>
+                        <option value="GEL">GEL</option>
+                        <option value="AGM">AGM</option>
+                    </select>
+                </div>
+                <div class="text-4xl font-bold text-green-700 md:mt-8">VS</div>
+                <div class="w-full md:w-1/3">
+                    <label for="battery2-select" class="block text-lg font-medium text-gray-700 mb-2">Batterie 2 :</label>
+                    <select id="battery2-select" class="block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-lg">
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="Lithium-ion (LiFePO4)">Lithium-ion (LiFePO4)</option>
+                        <option value="GEL">GEL</option>
+                        <option value="AGM">AGM</option>
+                    </select>
+                </div>
+            </div>
+            <button id="compare-button" class="w-full bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 transition-colors duration-300 font-bold text-xl shadow-lg transform hover:scale-105 flex items-center justify-center">
+                <svg id="compare-spinner" class="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: none;">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Comparer les Batteries ✨</span>
+            </button>
+
+            <div id="comparison-results" class="bg-gray-50 p-6 rounded-lg shadow-inner border border-gray-200 min-h-[200px] text-gray-700 leading-relaxed text-lg mt-8">
+                <p>La comparaison apparaîtra ici après votre sélection.</p>
+            </div>
+            <div id="compare-message-box" class="message-box mt-4"></div>
+        </section>
+
+        <section id="q-a-gemini" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12">
+            <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">✨ Posez Vos Questions à Gemini ✨</h2>
+            <p class="text-xl leading-relaxed mb-6 text-center">
+                Besoin d'une explication sur un terme technique ? Demandez à notre IA experte !
+                Tapez un concept (ex: "Qu'est-ce que le BMS ?", "Décharge profonde") et obtenez une réponse rapide.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <input type="text" id="gemini-input" class="flex-grow p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 text-lg" placeholder="Ex: C-rate, Onduleur hybride...">
+                <button id="gemini-button" class="bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 transition-colors duration-300 font-bold text-xl shadow-lg transform hover:scale-105 flex items-center justify-center min-w-[200px]">
+                    <svg id="loading-spinner" class="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: none;">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Demander à Gemini ✨</span>
+                </button>
+            </div>
+            <div id="gemini-response" class="bg-gray-50 p-6 rounded-lg shadow-inner border border-gray-200 min-h-[150px] text-gray-700 leading-relaxed text-lg">
+                <p>Votre explication apparaîtra ici après avoir posé une question. N'hésitez pas !</p>
+            </div>
+            <div id="message-box" class="message-box mt-4"></div>
+        </section>
+
+        <section id="contact" class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+            <h2 class="text-4xl font-bold text-green-700 mb-6 text-center">Contactez Nos Experts !</h2>
+            <p class="text-xl leading-relaxed mb-8 text-center">
+                Prêt(e) à passer à l'énergie solaire autonome ?
+                Contactez-nous pour un devis personnalisé ou pour toute question supplémentaire.
+                Notre équipe est là pour vous guider.
+            </p>
+            <form class="space-y-6 max-w-lg mx-auto">
+                <div>
+                    <label for="name" class="block text-lg font-medium text-gray-700 mb-2">Nom Complet</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-lg" placeholder="Votre nom et prénom">
+                </div>
+                <div>
+                    <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Adresse E-mail</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-lg" placeholder="votre.email@example.com">
+                </div>
+                <div>
+                    <label for="message" class="block text-lg font-medium text-gray-700 mb-2">Votre Message</label>
+                    <textarea id="message" name="message" rows="5" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-lg" placeholder="Décrivez votre projet ou votre question..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 transition-colors duration-300 font-bold text-xl shadow-lg transform hover:scale-105">Envoyer le Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white p-8 mt-12 rounded-t-xl shadow-inner">
+        <div class="container mx-auto text-center">
+            <p class="text-lg mb-2">&copy; 2025 Solutions Batteries Solaires. Tous droits réservés.</p>
+            <p class="text-md text-gray-400">Transformons l'énergie solaire en autonomie durable.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" class="inline-block mr-1"> Facebook</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300"><img src="https://img.icons8.com/ios-filled/24/ffffff/twitter-squared.png" alt="Twitter" class="inline-block mr-1"> Twitter</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300"><img src="https://img.icons8.com/ios-filled/24/ffffff/linkedin.png" alt="LinkedIn" class="inline-block mr-1"> LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements for Q&A Gemini section
+            const geminiInput = document.getElementById('gemini-input');
+            const geminiButton = document.getElementById('gemini-button');
+            const geminiResponseDiv = document.getElementById('gemini-response');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const messageBox = document.getElementById('message-box'); // For Q&A section messages
+
+            // Elements for Battery Comparison section
+            const battery1Select = document.getElementById('battery1-select');
+            const battery2Select = document.getElementById('battery2-select');
+            const compareButton = document.getElementById('compare-button');
+            const comparisonResultsDiv = document.getElementById('comparison-results');
+            const compareSpinner = document.getElementById('compare-spinner');
+            const compareMessageBox = document.getElementById('compare-message-box'); // For Comparison section messages
+
+
+            // Helper function to show messages (reusable for both sections)
+            function showMessage(targetMessageBox, message, type = 'info') {
+                targetMessageBox.textContent = message;
+                targetMessageBox.className = `message-box show ${type === 'error' ? 'error' : ''}`;
+            }
+
+            // Helper function to hide messages (reusable for both sections)
+            function hideMessage(targetMessageBox) {
+                targetMessageBox.className = 'message-box';
+            }
+
+            // --- Q&A Gemini Logic ---
+            geminiButton.addEventListener('click', async () => {
+                const prompt = geminiInput.value.trim();
+                hideMessage(messageBox); // Hide previous messages for Q&A
+
+                if (!prompt) {
+                    showMessage(messageBox, "Veuillez entrer une question ou un concept à expliquer.", "info");
+                    return;
+                }
+
+                geminiResponseDiv.innerHTML = '<p class="text-center text-gray-500">Chargement de la réponse...</p>';
+                loadingSpinner.style.display = 'inline-block'; // Show spinner
+                geminiButton.disabled = true; // Disable button during loading
+
+                try {
+                    let chatHistory = [];
+                    // Contextualize the prompt for solar batteries to get precise answers
+                    chatHistory.push({ role: "user", parts: [{ text: `En tant qu'expert en batteries solaires, expliquez le concept suivant lié aux batteries solaires ou à l'énergie photovoltaïque, de manière claire, concise et pédagogique. N'incluez pas d'introduction ou de conclusion générale, allez droit au but sur l'explication du concept : "${prompt}"` }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // API key will be automatically injected by the Canvas environment
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`Erreur API: ${response.status} - ${errorData.error.message || 'Problème de connexion.'}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        geminiResponseDiv.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        geminiResponseDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer une réponse claire. Veuillez reformuler votre question ou réessayer.</p>';
+                        showMessage(messageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à l\'API Gemini:', error);
+                    geminiResponseDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la réponse. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
+                    showMessage(messageBox, `Erreur: ${error.message}`, "error");
+                } finally {
+                    loadingSpinner.style.display = 'none'; // Hide spinner
+                    geminiButton.disabled = false; // Re-enable button
+                }
+            });
+
+            // --- Battery Comparison Logic ---
+            compareButton.addEventListener('click', async () => {
+                const battery1 = battery1Select.value;
+                const battery2 = battery2Select.value;
+                hideMessage(compareMessageBox); // Hide previous messages for comparison
+
+                if (!battery1 || !battery2) {
+                    showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries à comparer.", "info");
+                    return;
+                }
+
+                if (battery1 === battery2) {
+                    showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries différents pour la comparaison.", "info");
+                    return;
+                }
+
+                comparisonResultsDiv.innerHTML = '<p class="text-center text-gray-500">Génération de la comparaison...</p>';
+                compareSpinner.style.display = 'inline-block'; // Show spinner
+                compareButton.disabled = true; // Disable button during loading
+
+                try {
+                    let chatHistory = [];
+                    // Prompt for comparison
+                    chatHistory.push({ role: "user", parts: [{ text: `Comparez les batteries solaires de type "${battery1}" et "${battery2}" en termes de durée de vie, profondeur de décharge (DoD), coût initial, entretien requis, efficacité et applications typiques. Présentez la comparaison de manière claire et structurée, en utilisant des points ou des paragraphes distincts pour chaque critère, et mettez en évidence les avantages et inconvénients de chaque type.` }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // API key will be automatically injected by the Canvas environment
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`Erreur API: ${response.status} - ${errorData.error.message || 'Problème de connexion.'}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        comparisonResultsDiv.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        comparisonResultsDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer la comparaison. Veuillez réessayer.</p>';
+                        showMessage(compareMessageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à l\'API Gemini pour la comparaison:', error);
+                    comparisonResultsDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la comparaison. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
+                    showMessage(compareMessageBox, `Erreur: ${error.message}`, "error");
+                } finally {
+                    compareSpinner.style.display = 'none'; // Hide spinner
+                    compareButton.disabled = false; // Re-enable button
+                }
+            });
+        });
+    </script>
+</body>
+                          </html>
+            Ajout de la page index.html              
