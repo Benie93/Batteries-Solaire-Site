@@ -228,150 +228,143 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Elements for Q&A Gemini section
-            const geminiInput = document.getElementById('gemini-input');
-            const geminiButton = document.getElementById('gemini-button');
-            const geminiResponseDiv = document.getElementById('gemini-response');
-            const loadingSpinner = document.getElementById('loading-spinner');
-            const messageBox = document.getElementById('message-box'); // For Q&A section messages
+        // REMPLACEZ CETTE URL PAR L'URL DE VOTRE SERVEUR PROXY DÉPLOYÉ !
+        // Par exemple: const PROXY_BASE_URL = 'https://mon-proxy-gemini.herokuapp.com';
+        const PROXY_BASE_URL = 'http://localhost:3000'; // <--- TRÈS IMPORTANT : METTEZ VOTRE URL DE PROXY ICI !
 
-            // Elements for Battery Comparison section
-            const battery1Select = document.getElementById('battery1-select');
-            const battery2Select = document.getElementById('battery2-select');
-            const compareButton = document.getElementById('compare-button');
-            const comparisonResultsDiv = document.getElementById('comparison-results');
-            const compareSpinner = document.getElementById('compare-spinner');
-            const compareMessageBox = document.getElementById('compare-message-box'); // For Comparison section messages
+        // Elements for Q&A Gemini section
+        const geminiInput = document.getElementById('gemini-input');
+        const geminiButton = document.getElementById('gemini-button');
+        const geminiResponseDiv = document.getElementById('gemini-response');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const messageBox = document.getElementById('message-box'); // For Q&A section messages
+
+        // Elements for Battery Comparison section
+        const battery1Select = document.getElementById('battery1-select');
+        const battery2Select = document.getElementById('battery2-select');
+        const compareButton = document.getElementById('compare-button');
+        const comparisonResultsDiv = document.getElementById('comparison-results');
+        const compareSpinner = document.getElementById('compare-spinner');
+        const compareMessageBox = document.getElementById('compare-message-box'); // For Comparison section messages
 
 
-            // Helper function to show messages (reusable for both sections)
-            function showMessage(targetMessageBox, message, type = 'info') {
-                targetMessageBox.textContent = message;
-                targetMessageBox.className = `message-box show ${type === 'error' ? 'error' : ''}`;
+        // Helper function to show messages (reusable for both sections)
+        function showMessage(targetMessageBox, message, type = 'info') {
+            targetMessageBox.textContent = message;
+            targetMessageBox.className = `message-box show ${type === 'error' ? 'error' : ''}`;
+        }
+
+        // Helper function to hide messages (reusable for both sections)
+        function hideMessage(targetMessageBox) {
+            targetMessageBox.className = 'message-box';
+        }
+
+        // --- Q&A Gemini Logic ---
+        geminiButton.addEventListener('click', async () => {
+            const prompt = geminiInput.value.trim();
+            hideMessage(messageBox); // Cache les messages précédents pour Q&A
+
+            if (!prompt) {
+                showMessage(messageBox, "Veuillez entrer une question ou un concept à expliquer.", "info");
+                return;
             }
 
-            // Helper function to hide messages (reusable for both sections)
-            function hideMessage(targetMessageBox) {
-                targetMessageBox.className = 'message-box';
+            geminiResponseDiv.innerHTML = '<p class="text-center text-gray-500">Chargement de la réponse...</p>';
+            loadingSpinner.style.display = 'inline-block'; // Affiche le spinner
+            geminiButton.disabled = true; // Désactive le bouton pendant le chargement
+
+            try {
+                // Appel au proxy pour la section Q&A
+                const response = await fetch(`${PROXY_BASE_URL}/gemini-qa-proxy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `En tant qu'expert en batteries solaires, expliquez le concept suivant lié aux batteries solaires ou à l'énergie photovoltaïque, de manière claire, concise et pédagogique. N'incluez pas d'introduction ou de conclusion générale, allez droit au but sur l'explication du concept : "${prompt}"`
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Erreur du proxy: ${response.status} - ${errorData.error || 'Problème de connexion.'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    geminiResponseDiv.innerHTML = `<p>${text}</p>`;
+                } else {
+                    geminiResponseDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer une réponse claire. Veuillez reformuler votre question ou réessayer.</p>';
+                    showMessage(messageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'appel au proxy pour Q&A:', error);
+                geminiResponseDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la réponse. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
+                showMessage(messageBox, `Erreur: ${error.message}`, "error");
+            } finally {
+                loadingSpinner.style.display = 'none'; // Cache le spinner
+                geminiButton.disabled = false; // Réactive le bouton
             }
-
-            // --- Q&A Gemini Logic ---
-            geminiButton.addEventListener('click', async () => {
-                const prompt = geminiInput.value.trim();
-                hideMessage(messageBox); // Hide previous messages for Q&A
-
-                if (!prompt) {
-                    showMessage(messageBox, "Veuillez entrer une question ou un concept à expliquer.", "info");
-                    return;
-                }
-
-                geminiResponseDiv.innerHTML = '<p class="text-center text-gray-500">Chargement de la réponse...</p>';
-                loadingSpinner.style.display = 'inline-block'; // Show spinner
-                geminiButton.disabled = true; // Disable button during loading
-
-                try {
-                    let chatHistory = [];
-                    // Contextualize the prompt for solar batteries to get precise answers
-                    chatHistory.push({ role: "user", parts: [{ text: `En tant qu'expert en batteries solaires, expliquez le concept suivant lié aux batteries solaires ou à l'énergie photovoltaïque, de manière claire, concise et pédagogique. N'incluez pas d'introduction ou de conclusion générale, allez droit au but sur l'explication du concept : "${prompt}"` }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = ""; // API key will be automatically injected by the Canvas environment
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`Erreur API: ${response.status} - ${errorData.error.message || 'Problème de connexion.'}`);
-                    }
-
-                    const result = await response.json();
-
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        geminiResponseDiv.innerHTML = `<p>${text}</p>`;
-                    } else {
-                        geminiResponseDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer une réponse claire. Veuillez reformuler votre question ou réessayer.</p>';
-                        showMessage(messageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de l\'appel à l\'API Gemini:', error);
-                    geminiResponseDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la réponse. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
-                    showMessage(messageBox, `Erreur: ${error.message}`, "error");
-                } finally {
-                    loadingSpinner.style.display = 'none'; // Hide spinner
-                    geminiButton.disabled = false; // Re-enable button
-                }
-            });
-
-            // --- Battery Comparison Logic ---
-            compareButton.addEventListener('click', async () => {
-                const battery1 = battery1Select.value;
-                const battery2 = battery2Select.value;
-                hideMessage(compareMessageBox); // Hide previous messages for comparison
-
-                if (!battery1 || !battery2) {
-                    showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries à comparer.", "info");
-                    return;
-                }
-
-                if (battery1 === battery2) {
-                    showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries différents pour la comparaison.", "info");
-                    return;
-                }
-
-                comparisonResultsDiv.innerHTML = '<p class="text-center text-gray-500">Génération de la comparaison...</p>';
-                compareSpinner.style.display = 'inline-block'; // Show spinner
-                compareButton.disabled = true; // Disable button during loading
-
-                try {
-                    let chatHistory = [];
-                    // Prompt for comparison
-                    chatHistory.push({ role: "user", parts: [{ text: `Comparez les batteries solaires de type "${battery1}" et "${battery2}" en termes de durée de vie, profondeur de décharge (DoD), coût initial, entretien requis, efficacité et applications typiques. Présentez la comparaison de manière claire et structurée, en utilisant des points ou des paragraphes distincts pour chaque critère, et mettez en évidence les avantages et inconvénients de chaque type.` }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = ""; // API key will be automatically injected by the Canvas environment
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`Erreur API: ${response.status} - ${errorData.error.message || 'Problème de connexion.'}`);
-                    }
-
-                    const result = await response.json();
-
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        comparisonResultsDiv.innerHTML = `<p>${text}</p>`;
-                    } else {
-                        comparisonResultsDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer la comparaison. Veuillez réessayer.</p>';
-                        showMessage(compareMessageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de l\'appel à l\'API Gemini pour la comparaison:', error);
-                    comparisonResultsDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la comparaison. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
-                    showMessage(compareMessageBox, `Erreur: ${error.message}`, "error");
-                } finally {
-                    compareSpinner.style.display = 'none'; // Hide spinner
-                    compareButton.disabled = false; // Re-enable button
-                }
-            });
         });
-    </script>const PROXY_BASE_URL = 'http://localhost:3000'; // <--- TRÈS IMPORTANT : METTEZ VOTRE URL DE PROXY ICI
+
+        // --- Battery Comparison Logic ---
+        compareButton.addEventListener('click', async () => {
+            const battery1 = battery1Select.value;
+            const battery2 = battery2Select.value;
+            hideMessage(compareMessageBox); // Cache les messages précédents pour la comparaison
+
+            if (!battery1 || !battery2) {
+                showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries à comparer.", "info");
+                return;
+            }
+
+            if (battery1 === battery2) {
+                showMessage(compareMessageBox, "Veuillez sélectionner deux types de batteries différents pour la comparaison.", "info");
+                return;
+            }
+
+            comparisonResultsDiv.innerHTML = '<p class="text-center text-gray-500">Génération de la comparaison...</p>';
+            compareSpinner.style.display = 'inline-block'; // Affiche le spinner
+            compareButton.disabled = true; // Désactive le bouton pendant le chargement
+
+            try {
+                // Appel au proxy pour la comparaison
+                const response = await fetch(`${PROXY_BASE_URL}/gemini-compare-proxy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: `Comparez les batteries solaires de type "${battery1}" et "${battery2}" en termes de durée de vie, profondeur de décharge (DoD), coût initial, entretien requis, efficacité et applications typiques. Présentez la comparaison de manière claire et structurée, en utilisant des points ou des paragraphes distincts pour chaque critère, et mettez en évidence les avantages et inconvénients de chaque type.`
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Erreur du proxy: ${response.status} - ${errorData.error || 'Problème de connexion.'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    comparisonResultsDiv.innerHTML = `<p>${text}</p>`;
+                } else {
+                    comparisonResultsDiv.innerHTML = '<p class="text-gray-500">Désolé, je n\'ai pas pu générer la comparaison. Veuillez réessayer.</p>';
+                    showMessage(compareMessageBox, "La structure de la réponse de l'IA est inattendue. (Détails dans la console)", "error");
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'appel au proxy pour la comparaison:', error);
+                comparisonResultsDiv.innerHTML = '<p class="text-red-600">Une erreur est survenue lors de la récupération de la comparaison. Veuillez vérifier votre connexion ou réessayer plus tard.</p>';
+                showMessage(compareMessageBox, `Erreur: ${error.message}`, "error");
+            } finally {
+                compareSpinner.style.display = 'none'; // Cache le spinner
+                compareButton.disabled = false; // Réactive le bouton
+            }
+        });
+    </script>
 </body>
-                          </html>
-            Ajout de la page index.html              
-Mise à jour de l'URL du proxy"
+</html>
+Mise à jour de l'URL du proxy
